@@ -1,0 +1,27 @@
+# the following list of parameters are required for various commands.
+
+# twitter
+twitter.username = 
+twitter.password =
+
+# imap-gmail
+gmail.username = 
+gmail.password = 
+
+# imap-work
+imap.work.username = 
+imap.work.password = 
+imap.work.server =
+
+# facebook
+facebook.username = 
+facebook.password = 
+facebook.apikey = 
+facebook.secretkey =
+
+# music
+music.library = 
+music.player.command =
+
+# bing
+search.appid = 

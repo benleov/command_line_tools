@@ -1,0 +1,90 @@
+<project name="CLWebServices" basedir="." default="main">
+
+    <property name="src.dir" value="src"/>
+
+    <property name="build.dir" value="out/ant"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+    <property name="main-class" value="webservicesapi.Main"/>
+    <property name="lib.dir" value="lib"/>
+	<property name="res.dir" value="res" />
+	<property name="conf.dir" value="conf" />
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+    <!-- create a property containing all .jar files, prefix lib/, and seperated with a space -->
+    <pathconvert property="libs.project" pathsep=" ">
+        <mapper>
+            <chainedmapper>
+
+                <!-- remove absolute path -->
+                <flattenmapper/>
+
+                <!-- add lib/ prefix -->
+                <globmapper from="*" to="lib/*"/>
+            </chainedmapper>
+        </mapper>
+
+        <path>
+
+            <!-- lib.home contains all jar files, in several subdirectories -->
+            <fileset dir="${lib.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
+    </pathconvert>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+                <attribute name="Class-Path" value="${libs.project}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java fork="true" classname="${main-class}">
+	    	<classpath>
+	    	    <path location="${jar.dir}/${ant.project.name}.jar" />
+	    		<path refid="classpath" />
+			</classpath>
+		</java>
+    </target>
+
+    <target name="clean-build" depends="clean,jar"/>
+
+    <target name="main" depends="clean,run"/>
+	
+	<target name="build32" depends="clean,jar">
+		<zip destfile="${build.dir}/${ant.project.name}_32bit.zip">
+			<zipfileset file="${jar.dir}/${ant.project.name}.jar"/>
+			<zipfileset file="${res.dir}/README"/>
+			<zipfileset file="${res.dir}/supported_commands.txt"/>
+			<zipfileset prefix="lib" dir="${lib.dir}" includes="*.jar,*.so" excludes="libjcurses_64.so"/>
+			<zipfileset prefix="lib" dir="${lib.dir}/facebook" includes="*.jar" />
+		</zip>	
+	</target>
+
+	<target name="build64" depends="clean,jar">
+		<zip destfile="${build.dir}/${ant.project.name}_64bit.zip">
+			<zipfileset file="${jar.dir}/${ant.project.name}.jar"/>
+			<zipfileset file="${res.dir}/README"/>
+			<zipfileset file="${res.dir}/supported_commands.txt"/>
+			<zipfileset prefix="lib" dir="${lib.dir}" includes="*.jar,*.so" excludes="libjcurses_32.so"/>
+			<zipfileset prefix="lib" dir="${lib.dir}/facebook" includes="*.jar" />
+		</zip>	
+	</target>
+</project>

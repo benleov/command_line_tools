@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="webservicesapi.data.db.model.note.Note">
+
+    <select id="selectNote" parameterType="int" resultType="webservicesapi.data.db.model.note.Note">
+       select * from NOTE where id = #{id}
+    </select>
+        <select id="selectAllNotes" resultType="webservicesapi.data.db.model.note.Note">
+       select * from NOTE
+    </select>
+    <insert id="insertNote" parameterType="webservicesapi.data.db.model.note.Note">
+        INSERT INTO NOTE (message)
+        VALUES #{message,jdbcType=VARCHAR}
+    </insert>
+
+    <insert id="createTableNote">
+        CREATE TABLE NOTE ( message VARCHAR(256) )
+    </insert>
+
+    <delete id="deleteAllNotes">
+        DELETE FROM NOTE
+    </delete>
+</mapper>

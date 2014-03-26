@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="webservicesapi.data.db.model.address.Contact">
+
+    <select id="select" parameterType="int" resultType="webservicesapi.data.db.model.address.Contact">
+       select * from ADDRESS_CONTACT where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="webservicesapi.data.db.model.address.Contact">
+        INSERT INTO ADDRESS_CONTACT (id,name,email,phone)
+        VALUES
+        (#{id,jdbcType=INTEGER},
+        #{name,jdbcType=VARCHAR},
+        #{email,jdbcType=VARCHAR},
+        #{phone,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>
